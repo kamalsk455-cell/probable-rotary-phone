@@ -25,7 +25,7 @@ class Customer {
   double dailyDue;
   double paidAmount;
   double todayPaid;
-  String todayMode; // 'ரொக்கம்' / 'UPI' / ''
+  String todayMode;
   bool isPaidToday;
   List<PaymentRecord> paymentHistory;
 
@@ -78,7 +78,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool isDayOpen = true; // நாள் ஓபன் / க்ளோஸ் நிலை
+  bool isDayOpen = true; 
   final List<Customer> _customers = []; // முற்றிலும் காலியான பட்டியல்
 
   @override
@@ -87,17 +87,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  // ---------------- நாள் திறத்தல் / முடித்தல் (Day Open / Close) ----------------
+  // நாள் திறத்தல் / முடித்தல் (Day Open / Close)
   void _toggleDayStatus() {
     if (isDayOpen) {
-      // நாள் முடிக்கும் போது கணக்கு சரிபார்த்து உறுதி செய்தல்
       double totalToday = _customers.fold(0, (sum, c) => sum + c.todayPaid);
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('இன்றைய கணக்கை முடிக்கவா? 🔒', style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text(
-            'இன்றைய மொத்த வசூல்: ₹${totalToday.toInt()}\n\nநாள் முடித்தால் இன்றைய கணக்கு பூட்டப்படும்.',
+            'இன்றைய மொத்த வசூல்: ₹${totalToday.toInt()}\n\nநாள் முடித்தால் இன்றைய வசூல் கணக்கு பூட்டப்படும்.',
             style: const TextStyle(fontSize: 15),
           ),
           actions: [
@@ -108,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 setState(() => isDayOpen = false);
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(backgroundColor: Colors.black87, content: Text('இன்றைய வசூல் வெற்றிகரமாக முடிக்கப்பட்டது!')),
+                  const SnackBar(backgroundColor: Colors.black87, content: Text('இன்றைய வசூல் கணக்கு முடிக்கப்பட்டது!')),
                 );
               },
               child: const Text('ஆம், கணக்கை முடி'),
@@ -117,7 +116,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ),
       );
     } else {
-      // புதிய நாள் தொடங்குதல்
       setState(() {
         isDayOpen = true;
         for (var c in _customers) {
@@ -127,12 +125,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         }
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(backgroundColor: Colors.green, content: Text('புதிய நாள் தொடங்கியது! இன்றைய வசூலைத் தொடங்கலாம்.')),
+        const SnackBar(backgroundColor: Colors.green, content: Text('புதிய நாள் தொடங்கியது! வசூலைத் தொடங்கலாம்.')),
       );
     }
   }
 
-  // ---------------- வசூல் பதிவு செய்தல் ----------------
+  // வசூல் பதிவு செய்தல்
   void _recordPayment(Customer customer, double amount, String mode) {
     if (!isDayOpen) {
       _showDayClosedWarning();
@@ -147,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
   }
 
-  // ---------------- தவறான பதிவை ரத்து செய்தல் (Undo) ----------------
+  // தவறான பதிவை ரத்து செய்தல் (Undo)
   void _undoPayment(Customer customer) {
     if (!isDayOpen) {
       _showDayClosedWarning();
@@ -169,11 +167,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _showDayClosedWarning() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(backgroundColor: Colors.red, content: Text('இன்றைய நாள் முடிக்கப்பட்டுவிட்டது! "நாள் தொடங்கு" கொடுக்கவும்.')),
+      const SnackBar(backgroundColor: Colors.red, content: Text('இன்றைய நாள் முடிக்கப்பட்டுவிட்டது! "நாள் தொடங்கு" அழுத்தவும்.')),
     );
   }
 
-  // ---------------- பகுதித் தொகை செலுத்தும் விண்டோ (Partial Pay) ----------------
+  // பகுதித் தொகை செலுத்தும் விண்டோ (Partial Pay)
   void _openPartialPayDialog(Customer customer) {
     if (!isDayOpen) {
       _showDayClosedWarning();
@@ -207,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 children: [
                   Expanded(
                     child: ChoiceChip(
-                      label: const Center(child: Text('ரொக்கம் (Cash)')),
+                      label: const Center(child: Text('ரொக்கம்')),
                       selected: selectedMode == 'ரொக்கம்',
                       onSelected: (val) => setDlgState(() => selectedMode = 'ரொக்கம்'),
                     ),
@@ -245,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ---------------- புதிய கஸ்டமர் சேர்க்கும் விண்டோ ----------------
+  // புதிய கஸ்டமர் சேர்க்கும் விண்டோ
   void _openAddCustomerDialog() {
     final shopCtrl = TextEditingController();
     final nameCtrl = TextEditingController();
@@ -325,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ---------------- பாஸ்புக் அட்டை விண்டோ (Passbook Table) ----------------
+  // பாஸ்புக் அட்டை விண்டோ
   void _openPassbookDialog(Customer customer) {
     showDialog(
       context: context,
@@ -432,12 +430,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: TabBarView(
         controller: _tabController,
         children: [
-          // -------------------------------------------------------------
-          // பக்கம் 1: இன்றைய வசூல் பட்டியல் (Daily Collection Sheet)
-          // -------------------------------------------------------------
+          // பக்கம் 1: இன்றைய வசூல் பட்டியல்
           Column(
             children: [
-              // வசூல் நிலைப் பட்டை
               Container(
                 color: const Color(0xFF1E293B),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -476,7 +471,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               padding: const EdgeInsets.all(10),
                               child: Row(
                                 children: [
-                                  // வரிசை எண்
                                   CircleAvatar(
                                     radius: 16,
                                     backgroundColor: c.isPaidToday ? Colors.green : const Color(0xFF0D7C66),
@@ -484,7 +478,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ),
                                   const SizedBox(width: 10),
 
-                                  // கடை & நபர் விவரம்
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -496,16 +489,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     ),
                                   ),
 
-                                  // பணம் வாங்கிய பட்டன்கள் / ரத்து பட்டன்
                                   if (!c.isPaidToday) ...[
-                                    // முழுத் தொகை (ஒரே தட்டு)
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D7C66), foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
                                       onPressed: () => _recordPayment(c, c.dailyDue, 'ரொக்கம்'),
                                       child: Text('₹${c.dailyDue.toInt()}'),
                                     ),
                                     const SizedBox(width: 4),
-                                    // பகுதித் தொகை பதிவு
                                     OutlinedButton(
                                       style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
                                       onPressed: () => _openPartialPayDialog(c),
@@ -536,9 +526,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          // -------------------------------------------------------------
-          // பக்கம் 2: மொத்தக் கணக்கு & அட்டவணை (Master Ledger & Passbook)
-          // -------------------------------------------------------------
+          // பக்கம் 2: மொத்தக் கணக்கு & அட்டவணை
           _customers.isEmpty
               ? Center(
                   child: Column(
