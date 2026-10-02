@@ -49,7 +49,7 @@ class Customer {
 }
 
 // ---------------------------------------------------------------------------
-// 2. முதன்மை செயலி (Main App)
+// 2. முதன்மை செயலி (Main App Entry)
 // ---------------------------------------------------------------------------
 class VasoolRajaApp extends StatelessWidget {
   const VasoolRajaApp({super.key});
@@ -79,7 +79,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool isDayOpen = true; 
-  final List<Customer> _customers = []; // முற்றிலும் காலியான பட்டியல்
+  final List<Customer> _customers = [];
 
   @override
   void initState() {
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         builder: (ctx) => AlertDialog(
           title: const Text('இன்றைய கணக்கை முடிக்கவா? 🔒', style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text(
-            'இன்றைய மொத்த வசூல்: ₹${totalToday.toInt()}\n\nநாள் முடித்தால் இன்றைய வசூல் கணக்கு பூட்டப்படும்.',
+            'இன்றைய மொத்த வசூல்: ₹${totalToday.toInt()}\n\nநாள் முடித்தால் கணக்கு பூட்டப்படும்.',
             style: const TextStyle(fontSize: 15),
           ),
           actions: [
@@ -243,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // புதிய கஸ்டமர் சேர்க்கும் விண்டோ
+  // புதிய கஸ்டமர் சேர்க்கும் படிவம்
   void _openAddCustomerDialog() {
     final shopCtrl = TextEditingController();
     final nameCtrl = TextEditingController();
@@ -262,31 +262,31 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             children: [
               TextField(
                 controller: shopCtrl,
-                decoration: const InputDecoration(labelText: 'கடையின் பெயர் *', hintText: 'எடுத்துக்காட்டு: ராஜா மளிகை', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'கடையின் பெயர் *', hintText: 'எ.கா: ராஜா மளிகை', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: nameCtrl,
-                decoration: const InputDecoration(labelText: 'உரிமையாளர் பெயர் *', hintText: 'எடுத்துக்காட்டு: ராஜா', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'உரிமையாளர் பெயர் *', hintText: 'எ.கா: ராஜா', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: phoneCtrl,
                 keyboardType: TextInputType.phone,
                 maxLength: 10,
-                decoration: const InputDecoration(labelText: 'மொபைல் எண் *', hintText: 'எடுத்துக்காட்டு: 9876543210', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'மொபைல் எண் *', hintText: 'எ.கா: 9876543210', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: amountCtrl,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'கடன் தொகை ₹ *', hintText: 'எடுத்துக்காட்டு: 10000', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'கடன் தொகை ₹ *', hintText: 'எ.கா: 10000', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: dueCtrl,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'தினசரி தவணை ₹ *', hintText: 'எடுத்துக்காட்டு: 100', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'தினசரி தவணை ₹ *', hintText: 'எ.கா: 100', border: OutlineInputBorder()),
               ),
             ],
           ),
@@ -323,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // பாஸ்புக் அட்டை விண்டோ
+  // பாஸ்புக் அட்டை விண்டோ (Passbook Details)
   void _openPassbookDialog(Customer customer) {
     showDialog(
       context: context,
@@ -406,7 +406,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             style: TextButton.styleFrom(foregroundColor: Colors.white),
             onPressed: _toggleDayStatus,
             icon: Icon(isDayOpen ? Icons.lock_open : Icons.lock, size: 18),
-            label: Text(isDayOpen ? 'நாள் முடி (Close)' : 'நாள் தொடங்கு (Open)', style: const TextStyle(fontWeight: FontWeight.bold)),
+            label: Text(isDayOpen ? 'நாள் முடி' : 'நாள் தொடங்கு', style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
         bottom: TabBar(
@@ -439,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _statCard('இன்று வர வேண்டியது', '₹${totalExpectedToday.toInt()}', Colors.white),
+                    _statCard('வர வேண்டியது', '₹${totalExpectedToday.toInt()}', Colors.white),
                     _statCard('இன்றைய வசூல்', '₹${totalCollectedToday.toInt()}', Colors.greenAccent),
                     _statCard('இன்றைய பாக்கி', '₹${(totalPendingToday < 0 ? 0 : totalPendingToday).toInt()}', Colors.amberAccent),
                   ],
@@ -454,9 +454,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           children: [
                             Icon(Icons.storefront_outlined, size: 55, color: Colors.grey.shade400),
                             const SizedBox(height: 10),
-                            const Text('இன்னும் கடைகள் எதுவும் சேர்க்கப்படவில்லை!', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                            const Text('இன்னும் கடைகள் சேர்க்கப்படவில்லை!', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 6),
-                            const Text('கீழே உள்ள "கடன் சேர் ➕" பட்டனைத் தட்டி கடைகளைச் சேர்க்கவும்.', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                            const Text('கீழே உள்ள "கடன் சேர் ➕" பட்டனைத் தட்டவும்.', style: TextStyle(color: Colors.grey, fontSize: 12)),
                           ],
                         ),
                       )
