@@ -5,7 +5,7 @@ void main() {
 }
 
 // ---------------------------------------------------------------------------
-// 1. விளம்பர பேனர் விட்ஜெட் (Ad Banner)
+// 1. விளம்பர பேனர் விட்ஜெட் (Ad Banner Widget)
 // ---------------------------------------------------------------------------
 class SmartAdBanner extends StatelessWidget {
   final String title;
@@ -167,7 +167,7 @@ class VasoolRajaApp extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// 4. முதன்மை கட்டுப்படுத்தி (Main State Controller)
+// 4. முதன்மை கட்டுப்படுத்தி & தரவு மேலாண்மை (Main Controller)
 // ---------------------------------------------------------------------------
 class MainAppController extends StatefulWidget {
   const MainAppController({super.key});
@@ -180,9 +180,9 @@ class _MainAppControllerState extends State<MainAppController> {
   int _activeScreen = 0; // 0: லாகின், 1: முதலாளி, 2: பையன், 3: கஸ்டமர்
   String _currentStaffId = '';
   CustomerLoan? _loggedInCustomer;
-  String _ownerPassword = '1234'; // முதலாளி முதல் முறை நுழைய எளிய பாஸ்வேர்ட்
+  String _ownerPassword = '1234'; // முதலாளிக்கு ஆரம்ப பாஸ்வேர்ட்
 
-  // முற்றிலும் காலியான பட்டியல்கள் (எந்த டம்மி பெயர்களும் இல்லை!)
+  // முற்றிலும் காலியான பட்டியல்கள் (எந்த டம்மி பெயரும் இல்லை)
   final List<Staff> _staffList = [];
   final List<CustomerLoan> _customerList = [];
 
@@ -207,7 +207,7 @@ class _MainAppControllerState extends State<MainAppController> {
     });
   }
 
-  // பையன் விவரம் மாற்ற
+  // பையன் விவரங்களை மாற்ற
   void _editStaff(Staff updated) {
     setState(() {
       int idx = _staffList.indexWhere((s) => s.id == updated.id);
@@ -222,7 +222,7 @@ class _MainAppControllerState extends State<MainAppController> {
     });
   }
 
-  // பையன் வசூல் டிக் செய்ய
+  // வசூல் டிக் செய்ய
   void _markDailyPaid(CustomerLoan c) {
     setState(() {
       c.isPaidToday = true;
@@ -281,7 +281,7 @@ class _MainAppControllerState extends State<MainAppController> {
 }
 
 // ---------------------------------------------------------------------------
-// காட்சி 1: லாகின் முகப்புத் திரை
+// காட்சி 1: முகப்பு லாகின் திரை
 // ---------------------------------------------------------------------------
 class RoleSelectionScreen extends StatelessWidget {
   final String ownerPassword;
@@ -352,7 +352,7 @@ class RoleSelectionScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${staff.routeName} வசூலுக்கு பாஸ்வேர்ட் உள்ளிடவும்:', style: const TextStyle(fontSize: 13, color: Colors.grey)),
+            Text('${staff.routeName} வசூலுக்கு பாஸ்வேர்ட் அடிக்கவும்:', style: const TextStyle(fontSize: 13, color: Colors.grey)),
             const SizedBox(height: 10),
             TextField(
               controller: ctrl,
@@ -1233,7 +1233,7 @@ class CustomerPassbookScreen extends StatelessWidget {
             const SizedBox(height: 8),
             GridView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics),
+              physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 10, crossAxisSpacing: 4, mainAxisSpacing: 4),
               itemCount: 100,
               itemBuilder: (ctx, i) {
